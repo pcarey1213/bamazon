@@ -51,7 +51,3 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Tennis Balls", "athletics", 10, 20);
 
 
--- Updates the row where the product name is Tennis Balls --
-UPDATE products
-SET stock_quantity = 10
-WHERE product_name = "Tennis Balls";
