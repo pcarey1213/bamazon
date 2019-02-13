@@ -54,7 +54,7 @@ function whatToDo(){
   };
 
   function showProductSalesByDept (){
-  var query= "SELECT product_sales AS department_nameSELECT SUM (product_sales) FROM products FROM SELECT department_name FROM products RIGHT JOIN departments ON products.department_name = departments.department_name;"
+  var query= "SELECT departments.department_id, departments.department_name, departments.over_head_costs SELECT DISTINCT products.department_name LEFT JOIN departments ON (products.department_name=departments.department_name) GROUP BY department_name"
     connection.query(query, function(err, results) {
     if (err) throw err;
       for (var i = 0; i < results.length; i++) {
