@@ -23,14 +23,13 @@ var connection = mysql.createConnection({
   });
 
   function whatToDo(){
-
     inquirer
     .prompt([
         {
         type: "list",
         name: "doingWhat",
         message: "What would you like to do?",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "End Session"]
         },
     ])
     .then(answers => {
@@ -48,32 +47,37 @@ var connection = mysql.createConnection({
             case "Add New Product":
                 addProduct();
                 break;
+            case "End Session":
+                endSession();
+                break;
         };
     });
-    };
+  };
     
   
-  function showProducts() {
-    connection.query("SELECT * FROM products", function(err, results) {
-    if (err) throw err;
-    for (var i = 0; i < results.length; i++) {
-        console.log(
-        i+1 + ".) " +
-            "Product: " +
-            results[i].product_name +
-            " || Product Id: " +
-            results[i].id +
-            " || Department: " +
-            results[i].department_name +
-            " || Price: $"+
-            results[i].price +
-            " || In Stock: " +
-            results[i].stock_quantity
-        );
-    };
-    whatToDo()
-    })
-    };
+    function showProducts() {
+        connection.query("SELECT * FROM products", function(err, results) {
+        if (err) throw err;
+        for (var i = 0; i < results.length; i++) {
+          console.log(
+            i+1 + ".) " +
+              "Product: " +
+              results[i].product_name +
+              " || Product Id: " +
+              results[i].id +
+              " || Department: " +
+              results[i].department_name +
+              " || Price: $"+
+              results[i].price +
+              " || In Stock: " +
+              results[i].stock_quantity +
+              " || Sales: $"+
+              results[i].product_sales
+          );
+        };
+        whatToDo()
+        })
+      };
 
   function showLow(){
     var lowEnd=0;
@@ -93,7 +97,9 @@ var connection = mysql.createConnection({
           " || Price: " +
           results[i].price +
           " || In Stock: " +
-          results[i].stock_quantity
+          results[i].stock_quantity +
+          " || Sales: $" +
+          results[i].product_sales
         );
       };
     whatToDo();
@@ -215,4 +221,8 @@ var connection = mysql.createConnection({
           }
         );
       });
+  }
+
+  function endSession(){
+    connection.end();
   }
